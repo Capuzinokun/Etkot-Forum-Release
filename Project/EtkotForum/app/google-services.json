@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "669874261722",
+    "firebase_url": "https://etkot-forum-f1c65.firebaseio.com",
+    "project_id": "etkot-forum-f1c65",
+    "storage_bucket": "etkot-forum-f1c65.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:669874261722:android:9852580a9f3f2b1bd71fe3",
+        "android_client_info": {
+          "package_name": "com.etkot_software.etkotforum"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "669874261722-d9e697n1i34uthf0a1f0jihi56vp1lp5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.etkot_software.etkotforum",
+            "certificate_hash": "df809ebaa1c604ae090cf8b18c44a3ed4f4b00a3"
+          }
+        },
+        {
+          "client_id": "669874261722-af4vpec5ic3s1eevjc7o3dkt3s3s2u2k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAm7ZNDGUGvQsx9tNQ6SZ71Ovxloq3lXhM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "669874261722-af4vpec5ic3s1eevjc7o3dkt3s3s2u2k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
