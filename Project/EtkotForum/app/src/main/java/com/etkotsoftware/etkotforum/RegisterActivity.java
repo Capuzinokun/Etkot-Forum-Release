@@ -21,8 +21,6 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText registerEmailText;
     private EditText registerPasswordText;
     private EditText registerPasswordConfirmText;
-    private Button registerButton;
-    private Button loginActivityButton;
 
     private FirebaseAuth mAuth;
 
@@ -36,8 +34,8 @@ public class RegisterActivity extends AppCompatActivity {
         registerEmailText = (EditText) findViewById(R.id.register_email);
         registerPasswordText = (EditText) findViewById(R.id.register_password);
         registerPasswordConfirmText = (EditText) findViewById(R.id.register_password_confirm);
-        registerButton = (Button) findViewById(R.id.register_button);
-        loginActivityButton = (Button) findViewById(R.id.login_activity_button);
+        Button registerButton = (Button) findViewById(R.id.register_button);
+        Button loginActivityButton = (Button) findViewById(R.id.login_activity_button);
 
         registerButton.setOnClickListener(new View.OnClickListener() {
 
@@ -99,9 +97,9 @@ public class RegisterActivity extends AppCompatActivity {
 
                                 if (task.isSuccessful()) {
 
-                                    Intent mainIntent = new Intent(
-                                            RegisterActivity.this, MainActivity.class);
-                                    startActivity(mainIntent);
+                                    Intent setupIntent = new Intent(
+                                            RegisterActivity.this, SetupActivity.class);
+                                    startActivity(setupIntent);
                                     finish();
                                 }
                                 else {

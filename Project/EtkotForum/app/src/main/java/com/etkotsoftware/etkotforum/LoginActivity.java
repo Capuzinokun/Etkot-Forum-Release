@@ -23,8 +23,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private EditText loginEmailText;
     private EditText loginPasswordText;
-    private Button loginButton;
-    private Button registerActivityButton;
 
     private FirebaseAuth mAuth;
 
@@ -37,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
 
         loginEmailText = (EditText) findViewById(R.id.login_email);
         loginPasswordText = (EditText) findViewById(R.id.login_password);
-        loginButton = (Button) findViewById(R.id.login_button);
-        registerActivityButton = (Button) findViewById(R.id.register_activity_button);
+        Button loginButton = (Button) findViewById(R.id.login_button);
+        Button registerActivityButton = (Button) findViewById(R.id.register_activity_button);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

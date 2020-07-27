@@ -5,4 +5,9 @@
     <item
         android:id="@+id/action_logout_button"
         android:title="@string/action_logout_text" />
+
+    <item
+        android:id="@+id/action_account_settings_button"
+        android:title="@string/action_account_settings_text" />
+
 </menu>
