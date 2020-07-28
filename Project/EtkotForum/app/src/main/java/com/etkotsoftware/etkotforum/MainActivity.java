@@ -3,13 +3,14 @@ package com.etkotsoftware.etkotforum;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -28,20 +29,25 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton addPostFloatingButton;
 
+    private MainFragment mainFragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainFragment = new MainFragment();
+
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        addPostFloatingButton = (FloatingActionButton) findViewById(R.id.addPostFloatingButton);
+        addPostFloatingButton = (FloatingActionButton) findViewById(R.id.createPostFloatingButton);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
         getSupportActionBar().setTitle("Etkot Forum");
+        refreshPosts();
 
         addPostFloatingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,6 +109,10 @@ public class MainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
 
+            case R.id.refresh_posts:
+                refreshPosts();
+                break;
+
             case R.id.action_account_settings_button:
                 Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
                 startActivity(setupIntent);
@@ -113,6 +123,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
     }
         return true;
+    }
+    private void refreshPosts() {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.main_frame_container, mainFragment);
+        fragmentTransaction.commit();
     }
 
     private void logOut() {

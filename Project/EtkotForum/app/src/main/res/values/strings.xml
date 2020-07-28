@@ -9,9 +9,13 @@
     <string name="password_confirm">Confirm Password</string>
     <string name="register_introduction_text">Create your new account! \nIt\'s free and \nyou won\'t miss out on latest posts!</string>
     <string name="action_account_settings_text">Account Settings</string>
+    <string name="sort_posts_text">Sort Posts</string>
+    <string name="refresh_text">Refresh</string>
     <string name="confirm_button_text">Confirm</string>
     <string name="username_edit_text">Username</string>
     <string name="create_post_textbox_hint">Add Description ...</string>
     <string name="create_post_button">Post</string>
     <string name="anonymously_check_box_text">Anonymous</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

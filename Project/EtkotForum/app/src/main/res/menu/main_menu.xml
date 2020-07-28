@@ -3,11 +3,23 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_logout_button"
-        android:title="@string/action_logout_text" />
+        android:id="@+id/refresh_posts"
+        android:icon="@android:drawable/ic_popup_sync"
+        android:title="@string/refresh_text"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/sort_posts"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="@string/sort_posts_text"
+        app:showAsAction="always" />
 
     <item
         android:id="@+id/action_account_settings_button"
         android:title="@string/action_account_settings_text" />
+
+    <item
+        android:id="@+id/action_logout_button"
+        android:title="@string/action_logout_text" />
 
 </menu>
