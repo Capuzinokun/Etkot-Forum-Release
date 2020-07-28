@@ -147,7 +147,7 @@ public class SetupActivity extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
 
-                                        storeIntoFirestore(uri, username);
+                                        storeIntoFirestore(uri, username.trim());
                                     }
                                 });
                             }

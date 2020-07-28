@@ -11,4 +11,7 @@
     <string name="action_account_settings_text">Account Settings</string>
     <string name="confirm_button_text">Confirm</string>
     <string name="username_edit_text">Username</string>
+    <string name="create_post_textbox_hint">Add Description ...</string>
+    <string name="create_post_button">Post</string>
+    <string name="anonymously_check_box_text">Anonymous</string>
 </resources>

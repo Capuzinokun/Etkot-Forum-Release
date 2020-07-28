@@ -8,13 +8,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private FirebaseFirestore firebaseFirestore;
+
+    private String user_id;
+
+    private FloatingActionButton addPostFloatingButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,11 +34,23 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        addPostFloatingButton = (FloatingActionButton) findViewById(R.id.addPostFloatingButton);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
         getSupportActionBar().setTitle("Etkot Forum");
+
+        addPostFloatingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent createPostIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                startActivity(createPostIntent);
+            }
+        });
     }
 
     /// Brings the user to login screen
@@ -45,6 +69,24 @@ public class MainActivity extends AppCompatActivity {
         if (currentUser == null) {
 
             changeToLogin();
+        } else {
+
+            user_id = mAuth.getCurrentUser().getUid();
+            firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                    if (task.isSuccessful()) {
+
+                        if (!task.getResult().exists()) {
+
+                            Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
+                            startActivity(setupIntent);
+                            finish();
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -64,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_account_settings_button:
                 Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
                 startActivity(setupIntent);
-                finish();
                 break;
 
             case R.id.action_logout_button:
