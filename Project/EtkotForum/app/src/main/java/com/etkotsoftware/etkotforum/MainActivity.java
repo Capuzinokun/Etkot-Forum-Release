@@ -3,7 +3,6 @@ package com.etkotsoftware.etkotforum;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
@@ -25,10 +24,6 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseFirestore firebaseFirestore;
 
-    private String user_id;
-
-    private FloatingActionButton addPostFloatingButton;
-
     private MainFragment mainFragment;
 
     @Override
@@ -41,12 +36,13 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        addPostFloatingButton = (FloatingActionButton) findViewById(R.id.createPostFloatingButton);
+        FloatingActionButton addPostFloatingButton = (FloatingActionButton) findViewById(R.id.createPostFloatingButton);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
 
         getSupportActionBar().setTitle("Etkot Forum");
+
         refreshPosts();
 
         addPostFloatingButton.setOnClickListener(new View.OnClickListener() {
@@ -70,14 +66,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null) {
 
+        if (currentUser == null) {
             changeToLogin();
         } else {
 
-            user_id = mAuth.getCurrentUser().getUid();
+            String user_id = mAuth.getCurrentUser().getUid();
             firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -110,7 +105,14 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.refresh_posts:
+                Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(mainIntent);
+                finish();
                 refreshPosts();
+                break;
+
+            case R.id.sort_posts_button:
+                // TODO
                 break;
 
             case R.id.action_account_settings_button:
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_logout_button:
-                logOut();
+                logOutAndExit();
                 break;
     }
         return true;
@@ -130,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void logOut() {
+    private void logOutAndExit() {
         mAuth.signOut();
         changeToLogin();
     }

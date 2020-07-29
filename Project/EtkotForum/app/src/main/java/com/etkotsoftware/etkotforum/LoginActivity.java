@@ -16,8 +16,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-// Test Account: test@test.test
-// Pw: Test123
 
 public class LoginActivity extends AppCompatActivity {
 

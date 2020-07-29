@@ -96,7 +96,8 @@ public class SetupActivity extends AppCompatActivity {
                     }
                 }
                 else {
-                    Toast.makeText(SetupActivity.this, "Error at retrieving data", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SetupActivity.this, "Error at retrieving data"
+                            , Toast.LENGTH_LONG).show();
                 }
             }
         });

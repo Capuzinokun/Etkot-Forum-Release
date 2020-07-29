@@ -2,6 +2,7 @@ package com.etkotsoftware.etkotforum;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -10,15 +11,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.core.OrderBy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +32,18 @@ import java.util.List;
  */
 public class MainFragment extends Fragment {
 
+    private Boolean sort_by_liked = false;
+
     private RecyclerView post_view_recycler;
     private PostAdapter postAdapter;
 
     private List<PostData> post_list;
+    private Boolean isPrimaryLoad = true;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
+
+    private DocumentSnapshot lastPost;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,15 +53,6 @@ public class MainFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MainFragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static MainFragment newInstance(String param1, String param2) {
         MainFragment fragment = new MainFragment();
         Bundle args = new Bundle();
@@ -68,7 +66,6 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            // TODO: Rename and change types of parameters
             String mParam1 = getArguments().getString(ARG_PARAM1);
             String mParam2 = getArguments().getString(ARG_PARAM2);
         }
@@ -92,31 +89,112 @@ public class MainFragment extends Fragment {
 
             firebaseFirestore = FirebaseFirestore.getInstance();
 
-            Query firstPosts = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING);
-
-            firstPosts.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            post_view_recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
-                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
 
-                    try {
+                    Boolean is_bottom = !recyclerView.canScrollVertically(1);
+
+                    if (is_bottom) {
+                        if (sort_by_liked) {
+                            nextPostsByLiked();
+                        }
+                        else {
+                            nextPosts();
+                        }
+                    }
+                }
+            });
+
+            if (sort_by_liked) {
+                nextPostsByLiked();
+            }
+            else {
+                Query firstPosts = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING).limit(4);
+                firstPosts.addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                        if (value == null) {
+                            return;
+                        }
+
+                        if (isPrimaryLoad) {
+
+                            lastPost = value.getDocuments()
+                                    .get(value.size() - 1);
+                        }
+
                         for (DocumentChange doc : value.getDocumentChanges()) {
 
                             if (doc.getType() == DocumentChange.Type.ADDED) {
 
-                                PostData postData = doc.getDocument().toObject(PostData.class);
-                                post_list.add(postData);
+                                String postId = doc.getDocument().getId();
+                                PostData postData = doc.getDocument()
+                                        .toObject(PostData.class).withId(postId);
 
+                                if (isPrimaryLoad) {
+
+                                    post_list.add(postData);
+                                } else {
+
+                                    post_list.add(0, postData);
+                                }
                                 postAdapter.notifyDataSetChanged();
                             }
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
+
+                        isPrimaryLoad = false;
                     }
-                }
-            });
+                });
+            }
         }
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    public void nextPosts() {
+
+        Query nextPosts = firebaseFirestore.collection("Posts")
+                .orderBy("timestamp", Query.Direction.DESCENDING).limit(4)
+                .startAfter(lastPost)
+                .limit(4);
+
+        nextPosts.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+
+                if (!value.isEmpty()) {
+
+                    Toast.makeText(getContext(), "Loading more posts...", Toast.LENGTH_SHORT).show();
+
+                    lastPost = value.getDocuments()
+                            .get(value.size() - 1);
+
+                    for (DocumentChange doc : value.getDocumentChanges()) {
+
+                        if (doc.getType() == DocumentChange.Type.ADDED) {
+
+                            String postId = doc.getDocument().getId();
+
+                            PostData postData = doc.getDocument()
+                                    .toObject(PostData.class).withId(postId);
+                            post_list.add(postData);
+
+                            postAdapter.notifyDataSetChanged();
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(getContext(), "Reached bottom!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    public void nextPostsByLiked() {
+        // TODO: Implement
     }
 }

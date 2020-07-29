@@ -9,7 +9,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/sort_posts"
+        android:id="@+id/sort_posts_button"
         android:icon="@android:drawable/ic_menu_compass"
         android:title="@string/sort_posts_text"
         app:showAsAction="always" />

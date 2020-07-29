@@ -2,7 +2,7 @@ package com.etkotsoftware.etkotforum;
 
 import java.util.Date;
 
-public class PostData {
+public class PostData extends PostId {
 
     public PostData() {}
 
