@@ -1,3 +1,3 @@
-# Etkot-Forum-Pre-Release
+# Etkot-Forum-Release
 
 Object oriended programming course project from LUT.
