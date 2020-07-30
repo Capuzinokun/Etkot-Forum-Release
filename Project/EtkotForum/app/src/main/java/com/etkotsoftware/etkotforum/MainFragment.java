@@ -166,7 +166,11 @@ public class MainFragment extends Fragment {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
-                if (!value.isEmpty()) {
+                if (value == null) {
+                    return;
+                }
+
+                else if (!value.isEmpty()) {
 
                     Toast.makeText(getContext(), "Loading more posts...", Toast.LENGTH_SHORT).show();
 

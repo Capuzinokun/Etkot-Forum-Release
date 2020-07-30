@@ -78,10 +78,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="16dp"
                 android:lines="3"
                 android:text="TextView"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/postItemImageView" />
@@ -90,7 +88,7 @@
                 android:id="@+id/likeButtonImageView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="144dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -114,9 +112,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/likeCountTextView"
+                app:layout_constraintTop_toBottomOf="@+id/postDescriptionTextView"
                 app:srcCompat="@mipmap/ic_comment_button" />
 
             <TextView
@@ -128,6 +128,15 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/postCommentButtonImageView"
                 app:layout_constraintTop_toBottomOf="@+id/postDescriptionTextView" />
+
+            <Button
+                android:id="@+id/deletePostButton"
+                android:layout_width="82dp"
+                android:layout_height="39dp"
+                android:text="@string/delete_button_text"
+                app:layout_constraintBottom_toTopOf="@+id/postItemImageView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

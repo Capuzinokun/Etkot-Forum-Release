@@ -20,4 +20,5 @@
     <string name="like_count_text">"Likes: "</string>
     <string name="comment_edit_text_hint">Insert comment here...</string>
     <string name="comment_count">"Comments: "</string>
+    <string name="delete_button_text">Delete</string>
 </resources>

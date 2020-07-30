@@ -6,8 +6,10 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -116,8 +118,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseFirestore.collection("Posts/" + postID + "/Likes")
-                .document(user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                .document(current_user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
 
@@ -125,7 +128,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     return;
                 }
                 else if (value.exists()) {
-
                     holder.postLikeButtonImage.setImageDrawable(context.getDrawable(R.mipmap.ic_like_button_liked));
                 } else {
                     holder.postLikeButtonImage.setImageDrawable(context.getDrawable(R.mipmap.ic_like_button_not_liked));
@@ -137,7 +139,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                firebaseFirestore.collection("Posts/" + postID + "/Likes").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                firebaseFirestore.collection("Posts/" + postID + "/Likes").document(current_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
@@ -147,12 +150,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             likesMap.put("timestamp", FieldValue.serverTimestamp());
 
                             firebaseFirestore.collection("Posts/" + postID + "/Likes")
-                                    .document(user_id).set(likesMap);
+                                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid()).set(likesMap);
                         }
                         else {
 
                             firebaseFirestore.collection("Posts/" + postID + "/Likes")
-                                    .document(user_id).delete();
+                                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid()).delete();
                         }
                     }
                 });
@@ -169,6 +172,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        holder.deletePostButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                String post_user_id = user_id;
+                if (current_user_id.equals(post_user_id)) {
+                    firebaseFirestore.collection("Posts/")
+                            .document(postID).delete();
+                    Toast.makeText(holder.mView.getContext(), "Post deleted. Please refresh to sort posts", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(holder.mView.getContext(), "Only admin/original poster can delete this", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
     @Override
@@ -190,6 +209,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         private ImageView postProfileImageView;
         private ImageView postLikeButtonImage;
         private ImageView postCommentButtonImage;
+        private Button deletePostButton;
 
         private FirebaseFirestore firebaseFirestore;
 
@@ -201,6 +221,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             postLikeCountTextView = (TextView) mView.findViewById(R.id.likeCountTextView);
             postCommentButtonImage = (ImageView) mView.findViewById(R.id.postCommentButtonImageView);
             commentCount = (TextView) mView.findViewById(R.id.commentCountTextView);
+            deletePostButton = (Button) mView.findViewById(R.id.deletePostButton);
         }
 
         public void setDescription(String description) {
