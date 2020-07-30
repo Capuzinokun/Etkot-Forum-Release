@@ -16,7 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-
+/**
+ * Class for handling the user's login attempt.
+ */
 public class LoginActivity extends AppCompatActivity {
 
     private EditText loginEmailText;
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 String loginEmail = loginEmailText.getText().toString();
                 String loginPassword = loginPasswordText.getText().toString();
 
+                // Checks if the email and password isn't empty.
                 if (!loginEmail.trim().isEmpty() && !loginPassword.trim().isEmpty()) {
 
                     mAuth.signInWithEmailAndPassword(loginEmail, loginPassword)
@@ -66,6 +69,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        // Starts the registration activity when clicked.
         registerActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

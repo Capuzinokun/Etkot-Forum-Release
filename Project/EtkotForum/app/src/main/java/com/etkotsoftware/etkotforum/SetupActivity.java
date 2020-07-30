@@ -36,6 +36,9 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Class for creating a profile (username and profile image).
+ */
 public class SetupActivity extends AppCompatActivity {
 
     private String user_id;
@@ -102,6 +105,7 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+        // Starts reading the storage if allowed.
         userImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -124,6 +128,7 @@ public class SetupActivity extends AppCompatActivity {
             }
         });
 
+        // Begins handling the given information.
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -163,6 +168,7 @@ public class SetupActivity extends AppCompatActivity {
         });
     }
 
+    // Stores the information if username is valid and image as well.
     private void storeIntoFirestore(Uri uri, String username) {
 
         if (username.length() < 3) {
@@ -208,6 +214,7 @@ public class SetupActivity extends AppCompatActivity {
         startActivityForResult(pickPhoto , 1);
     }
 
+    // Handles the image selection and cropping.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

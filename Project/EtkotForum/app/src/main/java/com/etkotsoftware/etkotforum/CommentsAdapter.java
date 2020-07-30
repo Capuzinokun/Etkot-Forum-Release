@@ -22,11 +22,13 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+/**
+ * Adapter class which handles the comments in a RecyclerView.
+ */
 public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHolder>{
 
     public List<Comments> commentsList;
     public Context context;
-    private FirebaseFirestore firebaseFirestore;
 
     public CommentsAdapter(List<Comments> commentsList) {
 
@@ -38,7 +40,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.comment_item, parent, false);
         context = parent.getContext();
-        firebaseFirestore = FirebaseFirestore.getInstance();
 
         return new CommentsAdapter.ViewHolder(view);
     }
@@ -51,9 +52,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
         String comment_description = commentsList.get(position).getDescription();
         holder.setCommentDescription(comment_description);
 
-        final String user_id = commentsList.get(position).getUser_id();
+        String comment_user_id = commentsList.get(position).getUser_id();
         Boolean is_anonymous = commentsList.get(position).getIs_anonymous();
-        holder.setCommendUsernamePicture(user_id, is_anonymous);
+        holder.setCommendUsernamePicture(comment_user_id, is_anonymous);
 
         Date timestamp = commentsList.get(position).getTimestamp();
         holder.setCommentDate(timestamp);
@@ -63,7 +64,6 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
     public int getItemCount() {
 
         if (commentsList != null) {
-
             return commentsList.size();
         }
         else {
@@ -80,15 +80,20 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             mView = itemView;
         }
 
+        // Sets the description.
         public void setCommentDescription(String description) {
 
             TextView comment_description = mView.findViewById(R.id.commentDescriptionTextView);
             comment_description.setText(description);
         }
 
+        // Attaches the date for the comment.
         public void setCommentDate(Date timestamp) {
             TextView commentDateTextView = mView.findViewById(R.id.commentDateTextView);
             try {
+                if (timestamp == null) {
+                    timestamp = new Date();
+                }
                 commentDateTextView.setText(timestamp.toString().substring(0, 19));
             }
             catch (Exception e) {
@@ -96,7 +101,9 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
             }
         }
 
-        public void setCommendUsernamePicture(String user_id, final Boolean is_anonymous) {
+        // Attaches usernames and profile images to comments.
+        // Also handles the request if the comment is wanted to be anonymous.
+        public void setCommendUsernamePicture(String comment_user_id, final Boolean is_anonymous) {
 
             final TextView commentUsernameView = (TextView) mView
                     .findViewById(R.id.commentUsernameTextView);
@@ -106,7 +113,7 @@ public class CommentsAdapter extends RecyclerView.Adapter<CommentsAdapter.ViewHo
 
             final String[] username = new String[1];
 
-            firebaseFirestore.collection("Users").document(user_id).get()
+            firebaseFirestore.collection("Users").document(comment_user_id).get()
                     .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {

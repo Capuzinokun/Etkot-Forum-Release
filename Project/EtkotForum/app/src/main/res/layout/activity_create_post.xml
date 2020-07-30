@@ -23,12 +23,12 @@
         android:id="@+id/createPostImageView"
         android:layout_width="0dp"
         android:layout_height="240dp"
-        android:background="#6E84FF"
+        android:background="#3F51B5"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/create_post_toolbar"
-        app:srcCompat="@android:drawable/stat_sys_download" />
+        app:srcCompat="@mipmap/ic_post_upload" />
 
     <EditText
         android:id="@+id/createPostTextMultiLine"

@@ -39,12 +39,13 @@ import java.util.UUID;
 
 import id.zelory.compressor.Compressor;
 
+/**
+ * Class for handling the creation of a new post.
+ */
 public class CreatePostActivity extends AppCompatActivity {
 
-    private Toolbar createPostToolbar;
     private ImageView createPostImage;
     private EditText createPostText;
-    private Button createPostButton;
     private CheckBox createPostAnonymously;
 
     private Uri createPostUri = null;
@@ -52,7 +53,6 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private StorageReference storageReference;
     private FirebaseFirestore firebaseFirestore;
-    private FirebaseAuth firebaseAuth;
 
     private String current_user_id;
     private Bitmap compressedImageBitmap;
@@ -62,18 +62,18 @@ public class CreatePostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_post);
 
-        createPostToolbar = (Toolbar) findViewById(R.id.create_post_toolbar);
+        Toolbar createPostToolbar = (Toolbar) findViewById(R.id.create_post_toolbar);
         setSupportActionBar(createPostToolbar);
         getSupportActionBar().setTitle("Create A New Post");
 
         createPostImage = (ImageView) findViewById(R.id.createPostImageView);
         createPostText = (EditText) findViewById(R.id.createPostTextMultiLine);
-        createPostButton = (Button) findViewById(R.id.createPostButton);
+        Button createPostButton = (Button) findViewById(R.id.createPostButton);
         createPostAnonymously = (CheckBox) findViewById(R.id.createPostAnonymouslyCheckBox);
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseFirestore = FirebaseFirestore.getInstance();
-        firebaseAuth = FirebaseAuth.getInstance();
+        final FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         current_user_id = firebaseAuth.getCurrentUser().getUid();
 
@@ -94,6 +94,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
                 final String description = createPostText.getText().toString();
 
+                // Checks if the description and images aren't empty/null.
                 if (!description.trim().isEmpty() && createPostUri != null) {
 
                     File createImageFile = new File(createPostUri.getPath());
@@ -112,6 +113,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
                     final String randomPath = generateRandomString();
 
+                    // Initialize storage path
                     StorageReference path = storageReference.child("post_images").child(randomPath + ".jpg");
                     path.putFile(createPostUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
@@ -122,6 +124,8 @@ public class CreatePostActivity extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
 
                                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+                                    // Compress a thumbnail of the image for quicker fetch when loading new posts.
                                     compressedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                                     byte[] ThumbnailData = baos.toByteArray();
                                     UploadTask uploadThumbnail = storageReference
@@ -152,6 +156,8 @@ public class CreatePostActivity extends AppCompatActivity {
                                     thumbnailUri = uri.toString();
                                     String downloadUri = uri.toString();
 
+                                    // Store all the information needed into a map
+                                    // and then upload it into Firebase database.
                                     Map<String, Object> postMap = new HashMap<>();
                                     postMap.put("image_url", downloadUri);
                                     postMap.put("thumbnail_url", thumbnailUri);
@@ -179,10 +185,14 @@ public class CreatePostActivity extends AppCompatActivity {
                         }
                     });
                 }
+                else {
+                    Toast.makeText(CreatePostActivity.this, "You must have written a description and upload an image", Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
+    // Image selection and cropping if wanted.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -201,6 +211,7 @@ public class CreatePostActivity extends AppCompatActivity {
         }
     }
 
+    // Generates a random String for every new post.
     private static String generateRandomString() {
         String uuid = UUID.randomUUID().toString().replaceAll("-", "");
         return uuid;

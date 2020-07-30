@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class for handling the creation of a comment.
+ */
 public class CommentActivity extends AppCompatActivity {
 
     private List<Comments> commentsList;
@@ -70,6 +73,7 @@ public class CommentActivity extends AppCompatActivity {
         comment_list.setLayoutManager(new LinearLayoutManager(this));
         comment_list.setAdapter(commentAdapter);
 
+        // Makes a query to sort posts by new.
         Query firstComments = firebaseFirestore.collection("Posts/" + post_id + "/Comments").orderBy("timestamp", Query.Direction.ASCENDING);
         firstComments.addSnapshotListener(CommentActivity.this, new EventListener<QuerySnapshot>() {
             @Override
@@ -81,7 +85,6 @@ public class CommentActivity extends AppCompatActivity {
 
                         if (doc.getType() == DocumentChange.Type.ADDED) {
 
-                            String commentId = doc.getDocument().getId();
                             Comments comments = doc.getDocument().toObject(Comments.class);
                             commentsList.add(comments);
                             commentAdapter.notifyDataSetChanged();

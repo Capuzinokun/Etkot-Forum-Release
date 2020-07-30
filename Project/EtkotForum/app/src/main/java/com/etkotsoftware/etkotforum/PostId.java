@@ -4,6 +4,10 @@ import androidx.annotation.NonNull;
 
 import com.google.firebase.firestore.Exclude;
 
+/**
+ * Class for extending a post with a id
+ * so that it can be accessed when needed.
+ */
 public class PostId {
 
     @Exclude

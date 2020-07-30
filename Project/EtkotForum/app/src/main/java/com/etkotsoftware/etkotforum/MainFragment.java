@@ -26,23 +26,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link MainFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment for displaying the posts in the MainActivity's frame container.
  */
 public class MainFragment extends Fragment {
 
     private Boolean sort_by_liked = false;
-
-    private RecyclerView post_view_recycler;
     private PostAdapter postAdapter;
 
     private List<PostData> post_list;
     private Boolean isPrimaryLoad = true;
 
-    private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firebaseFirestore;
-
     private DocumentSnapshot lastPost;
 
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,22 +59,20 @@ public class MainFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            String mParam1 = getArguments().getString(ARG_PARAM1);
-            String mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
+    // Initializes the list for the posts and then fetches information from
+    // CommentsAdapter class.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         post_list = new ArrayList<>();
-        post_view_recycler = (RecyclerView) view.findViewById(R.id.post_view_recycler);
+        RecyclerView post_view_recycler = (RecyclerView) view.findViewById(R.id.post_view_recycler);
         postAdapter = new PostAdapter(post_list);
         post_view_recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         post_view_recycler.setAdapter(postAdapter);
@@ -89,6 +81,7 @@ public class MainFragment extends Fragment {
 
             firebaseFirestore = FirebaseFirestore.getInstance();
 
+            // Checks whether the user has reached the bottom.
             post_view_recycler.addOnScrollListener(new RecyclerView.OnScrollListener() {
                 @Override
                 public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
@@ -107,9 +100,11 @@ public class MainFragment extends Fragment {
                 }
             });
 
+            // TODO:
             if (sort_by_liked) {
                 nextPostsByLiked();
             }
+            // Checks the posts and re-arranges them if a newer post is imported during browsing.
             else {
                 Query firstPosts = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING).limit(4);
                 firstPosts.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -155,6 +150,7 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    // Fetches the next posts according to post time.
     public void nextPosts() {
 
         Query nextPosts = firebaseFirestore.collection("Posts")

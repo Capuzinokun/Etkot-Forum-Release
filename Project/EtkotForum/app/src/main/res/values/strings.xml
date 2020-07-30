@@ -5,7 +5,7 @@
     <string name="login_introduction_text">It\'s finally here, \nthe one and only, \nEtkot Forum!</string>
     <string name="login_button_text">Login</string>
     <string name="register_button_text">Register</string>
-    <string name="action_logout_text">Logout and exit</string>
+    <string name="action_logout_text">Logout</string>
     <string name="password_confirm">Confirm Password</string>
     <string name="register_introduction_text">Create your new account! \nIt\'s free and \nyou won\'t miss out on latest posts!</string>
     <string name="action_account_settings_text">Account Settings</string>
@@ -21,4 +21,8 @@
     <string name="comment_edit_text_hint">Insert comment here...</string>
     <string name="comment_count">"Comments: "</string>
     <string name="delete_button_text">Delete</string>
+    <string name="comment_text_pretext">Comment</string>
+    <string name="comment_time_text">Date</string>
+    <string name="post_date_text">Date</string>
+    <string name="post_description_text">Description</string>
 </resources>

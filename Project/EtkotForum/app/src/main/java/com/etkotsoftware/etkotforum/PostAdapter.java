@@ -32,6 +32,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Class for adapting the posts to the RecyclerView.
+ */
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     public Context context;
@@ -97,6 +100,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        // Updates the comment count for a post.
         firebaseFirestore.collection("Posts/" + postID + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -118,6 +122,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        // Updates the icon if the user has liked the post or not.
         String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         firebaseFirestore.collection("Posts/" + postID + "/Likes")
                 .document(current_user_id).addSnapshotListener(new EventListener<DocumentSnapshot>() {
@@ -135,6 +140,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        // Puts the user's information into database if user likes a post.
         holder.postLikeButtonImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -162,6 +168,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        // Starts the creation of a new post activity.
         holder.postCommentButtonImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -172,6 +179,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
 
+        // Deletes the post if the user is valid to do it (is_admin or original poster)
         holder.deletePostButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,6 +203,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         return post_list.size();
     }
 
+    /**
+     * Class for setting up all the information needed into the ItemView.
+     */
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         private View mView;

@@ -2,6 +2,9 @@ package com.etkotsoftware.etkotforum;
 
 import java.util.Date;
 
+/**
+ * Getters and setters for comments.
+ */
 public class Comments {
 
     public Comments() {}

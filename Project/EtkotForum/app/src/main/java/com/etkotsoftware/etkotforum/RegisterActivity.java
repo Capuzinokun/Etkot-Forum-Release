@@ -16,6 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+/**
+ * Class which handles the user's registration.
+ */
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText registerEmailText;
@@ -45,6 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
 
+        // Ends the activity and brings user to the login screen.
         loginActivityButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +74,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    // Checks if the email, username and/or password is/are valid.
     private void checkCriteria() {
 
         String password_not_valid = "Password needs to contain lower, uppercase letters and numbers!";
@@ -128,6 +133,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    // Checks if the password is strong (has lower- and uppercases and numbers).
     private boolean checkPasswordSeverity(String password) {
 
         boolean hasLowercase = !password.equals(password.toUpperCase());

@@ -1,3 +1,17 @@
+/**
+ * This application depicts a forum/blog type messaging platform.
+ *
+ * The users can create accounts (with an email) and can also set up a
+ * profile image and username.
+ * They can then post posts which include an image and description.
+ * Other users can like them and also comment in them.
+ * All this can be done anonymous if wanted.
+ * Only original poster or admin can delete posts.
+ *
+ * Program Author:
+ * Name: Petrus Jussila
+ */
+
 package com.etkotsoftware.etkotforum;
 
 import androidx.annotation.NonNull;
@@ -40,7 +54,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
-
         getSupportActionBar().setTitle("Etkot Forum");
 
         refreshPosts();
@@ -55,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /// Brings the user to login screen
+    /// Brings the user to login screen.
     private void changeToLogin() {
 
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
@@ -68,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         super.onStart();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        // Checks if user isn't logged in
         if (currentUser == null) {
             changeToLogin();
         } else {
@@ -79,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (task.isSuccessful()) {
 
+                        // Checks whether or not the user has a username/prof.image.
                         if (!task.getResult().exists()) {
 
                             Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
@@ -91,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // Creates main_menu.xml
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -126,12 +142,15 @@ public class MainActivity extends AppCompatActivity {
     }
         return true;
     }
+
+    // Empties the fragment and replaces with newly fetch information.
     private void refreshPosts() {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame_container, mainFragment);
         fragmentTransaction.commit();
     }
 
+    // Logs out the user and brings the user to login screen.
     private void logOutAndExit() {
         mAuth.signOut();
         changeToLogin();

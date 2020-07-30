@@ -2,6 +2,9 @@ package com.etkotsoftware.etkotforum;
 
 import java.util.Date;
 
+/**
+ * Class containing the getters and setters for every post.
+ */
 public class PostData extends PostId {
 
     public PostData() {}
