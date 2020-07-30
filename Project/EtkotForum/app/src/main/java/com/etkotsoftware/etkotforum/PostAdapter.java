@@ -50,7 +50,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.post_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.post_item, parent, false);
         firebaseFirestore = FirebaseFirestore.getInstance();
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         context = parent.getContext();
@@ -78,7 +79,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         Date timestamp = post_list.get(position).getTimestamp();
         holder.setPostDate(timestamp);
 
-        firebaseFirestore.collection("Posts/" + postID + "/Likes").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseFirestore.collection("Posts/" + postID + "/Likes")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
@@ -101,7 +103,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         });
 
         // Updates the comment count for a post.
-        firebaseFirestore.collection("Posts/" + postID + "/Comments").addSnapshotListener(new EventListener<QuerySnapshot>() {
+        firebaseFirestore.collection("Posts/" + postID + "/Comments")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
 
@@ -133,9 +136,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                     return;
                 }
                 else if (value.exists()) {
-                    holder.postLikeButtonImage.setImageDrawable(context.getDrawable(R.mipmap.ic_like_button_liked));
+                    holder.postLikeButtonImage
+                            .setImageDrawable(context.getDrawable(R.mipmap.ic_like_button_liked));
                 } else {
-                    holder.postLikeButtonImage.setImageDrawable(context.getDrawable(R.mipmap.ic_like_button_not_liked));
+                    holder.postLikeButtonImage
+                            .setImageDrawable(context.getDrawable(R.mipmap.ic_like_button_not_liked));
                 }
             }
         });
@@ -146,7 +151,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             public void onClick(View view) {
 
                 String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-                firebaseFirestore.collection("Posts/" + postID + "/Likes").document(current_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                firebaseFirestore.collection("Posts/" + postID + "/Likes")
+                        .document(current_user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
@@ -156,12 +162,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                             likesMap.put("timestamp", FieldValue.serverTimestamp());
 
                             firebaseFirestore.collection("Posts/" + postID + "/Likes")
-                                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid()).set(likesMap);
+                                    .document(FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid()).set(likesMap);
                         }
                         else {
 
                             firebaseFirestore.collection("Posts/" + postID + "/Likes")
-                                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid()).delete();
+                                    .document(FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid()).delete();
                         }
                     }
                 });
@@ -189,10 +197,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
                 if (current_user_id.equals(post_user_id)) {
                     firebaseFirestore.collection("Posts/")
                             .document(postID).delete();
-                    Toast.makeText(holder.mView.getContext(), "Post deleted. Please refresh to sort posts", Toast.LENGTH_LONG).show();
+                    Toast.makeText(holder.mView.getContext(),
+                            "Post deleted. Please refresh to sort posts", Toast.LENGTH_LONG).show();
                 }
                 else {
-                    Toast.makeText(holder.mView.getContext(), "Only admin/original poster can delete this", Toast.LENGTH_LONG).show();
+                    Toast.makeText(holder.mView.getContext(),
+                            "Only admin/original poster can delete this", Toast.LENGTH_LONG).show();
                 }
             }
         });

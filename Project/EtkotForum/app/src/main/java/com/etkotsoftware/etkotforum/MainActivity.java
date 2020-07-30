@@ -50,7 +50,8 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         firebaseFirestore = FirebaseFirestore.getInstance();
 
-        FloatingActionButton addPostFloatingButton = (FloatingActionButton) findViewById(R.id.createPostFloatingButton);
+        FloatingActionButton addPostFloatingButton =
+                (FloatingActionButton) findViewById(R.id.createPostFloatingButton);
 
         Toolbar mainToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(mainToolbar);
@@ -62,7 +63,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent createPostIntent = new Intent(MainActivity.this, CreatePostActivity.class);
+                Intent createPostIntent =
+                        new Intent(MainActivity.this, CreatePostActivity.class);
                 startActivity(createPostIntent);
             }
         });
@@ -87,7 +89,8 @@ public class MainActivity extends AppCompatActivity {
         } else {
 
             String user_id = mAuth.getCurrentUser().getUid();
-            firebaseFirestore.collection("Users").document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            firebaseFirestore.collection("Users")
+                    .document(user_id).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
 
@@ -96,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
                         // Checks whether or not the user has a username/prof.image.
                         if (!task.getResult().exists()) {
 
-                            Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
+                            Intent setupIntent =
+                                    new Intent(MainActivity.this, SetupActivity.class);
                             startActivity(setupIntent);
                             finish();
                         }
@@ -121,7 +125,8 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
 
             case R.id.refresh_posts:
-                Intent mainIntent = new Intent(MainActivity.this, MainActivity.class);
+                Intent mainIntent =
+                        new Intent(MainActivity.this, MainActivity.class);
                 startActivity(mainIntent);
                 finish();
                 refreshPosts();
@@ -132,7 +137,8 @@ public class MainActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_account_settings_button:
-                Intent setupIntent = new Intent(MainActivity.this, SetupActivity.class);
+                Intent setupIntent =
+                        new Intent(MainActivity.this, SetupActivity.class);
                 startActivity(setupIntent);
                 break;
 

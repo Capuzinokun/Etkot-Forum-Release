@@ -106,7 +106,8 @@ public class MainFragment extends Fragment {
             }
             // Checks the posts and re-arranges them if a newer post is imported during browsing.
             else {
-                Query firstPosts = firebaseFirestore.collection("Posts").orderBy("timestamp", Query.Direction.DESCENDING).limit(4);
+                Query firstPosts = firebaseFirestore.collection("Posts")
+                        .orderBy("timestamp", Query.Direction.DESCENDING).limit(4);
                 firstPosts.addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -168,7 +169,8 @@ public class MainFragment extends Fragment {
 
                 else if (!value.isEmpty()) {
 
-                    Toast.makeText(getContext(), "Loading more posts...", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Loading more posts...",
+                            Toast.LENGTH_SHORT).show();
 
                     lastPost = value.getDocuments()
                             .get(value.size() - 1);

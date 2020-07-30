@@ -74,7 +74,9 @@ public class CommentActivity extends AppCompatActivity {
         comment_list.setAdapter(commentAdapter);
 
         // Makes a query to sort posts by new.
-        Query firstComments = firebaseFirestore.collection("Posts/" + post_id + "/Comments").orderBy("timestamp", Query.Direction.ASCENDING);
+        Query firstComments = firebaseFirestore
+                .collection("Posts/" + post_id + "/Comments")
+                .orderBy("timestamp", Query.Direction.ASCENDING);
         firstComments.addSnapshotListener(CommentActivity.this, new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {

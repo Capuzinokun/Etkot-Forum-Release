@@ -112,8 +112,12 @@ public class SetupActivity extends AppCompatActivity {
 
                 if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
-                    if (ContextCompat.checkSelfPermission(SetupActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED
-                    || ContextCompat.checkSelfPermission(SetupActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                    if (ContextCompat.checkSelfPermission(SetupActivity.this,
+                            Manifest.permission.READ_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_DENIED
+                    || ContextCompat.checkSelfPermission(SetupActivity.this,
+                            Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                            == PackageManager.PERMISSION_DENIED) {
 
                         askForPermission();
                     }
@@ -137,11 +141,12 @@ public class SetupActivity extends AppCompatActivity {
 
                 if (imageChanged) {
 
-                    if (username.length() < 3) {
-                        Toast.makeText(SetupActivity.this, "Username is too short", Toast.LENGTH_LONG).show();
-                    } else if (imageURI == null) {
-                        Toast.makeText(SetupActivity.this, "You need to select a picture", Toast.LENGTH_LONG).show();
-                    } else {
+                    if (username.length() < 3 || imageURI == null) {
+                        Toast.makeText(SetupActivity.this,
+                                "Username must be at least 3 characters and an image must be selected",
+                                Toast.LENGTH_LONG).show();
+                    }
+                    else {
 
                         user_id = firebaseAuth.getCurrentUser().getUid();
                         StorageReference image_path = storageReference.child("profile_images").child(user_id + ".png");

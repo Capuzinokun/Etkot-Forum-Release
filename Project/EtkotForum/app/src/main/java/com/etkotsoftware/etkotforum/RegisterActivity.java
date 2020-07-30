@@ -116,20 +116,24 @@ public class RegisterActivity extends AppCompatActivity {
                         });
                     }
                     else {
-                        Toast.makeText(RegisterActivity.this, password_not_valid, Toast.LENGTH_LONG).show();
+                        Toast.makeText(RegisterActivity.this,
+                                password_not_valid, Toast.LENGTH_LONG).show();
                     }
                 }
                 else {
-                    Toast.makeText(RegisterActivity.this, email_not_valid, Toast.LENGTH_LONG).show();
+                    Toast.makeText(RegisterActivity.this,
+                            email_not_valid, Toast.LENGTH_LONG).show();
                 }
             }
             else {
-                Toast.makeText(RegisterActivity.this, passwords_dont_match, Toast.LENGTH_LONG).show();
+                Toast.makeText(RegisterActivity.this,
+                        passwords_dont_match, Toast.LENGTH_LONG).show();
             }
 
         }
         else {
-            Toast.makeText(RegisterActivity.this, empty_fields, Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterActivity.this,
+                    empty_fields, Toast.LENGTH_LONG).show();
         }
     }
 

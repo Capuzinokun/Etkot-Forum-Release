@@ -16,7 +16,8 @@ public class PostData extends PostId {
     public String user_id;
     public Date timestamp;
 
-    public PostData(String description, String image_url, String thumbnail_url, boolean is_anonymous, String user_id, Date timestamp) {
+    public PostData(String description, String image_url, String thumbnail_url,
+                    boolean is_anonymous, String user_id, Date timestamp) {
         this.description = description;
         this.image_url = image_url;
         this.thumbnail_url = thumbnail_url;

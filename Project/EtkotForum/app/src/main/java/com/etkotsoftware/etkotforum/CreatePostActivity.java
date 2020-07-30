@@ -135,7 +135,9 @@ public class CreatePostActivity extends AppCompatActivity {
                                     uploadThumbnail.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                         @Override
                                         public void onSuccess(final UploadTask.TaskSnapshot taskSnapshot1) {
-                                            taskSnapshot1.getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            taskSnapshot1.getMetadata().getReference()
+                                                    .getDownloadUrl()
+                                                    .addOnSuccessListener(new OnSuccessListener<Uri>() {
                                                 @Override
                                                 public void onSuccess(Uri uri1) {
 
@@ -166,14 +168,18 @@ public class CreatePostActivity extends AppCompatActivity {
                                     postMap.put("timestamp", FieldValue.serverTimestamp());
                                     postMap.put("is_anonymous", createPostAnonymously.isChecked());
 
-                                    firebaseFirestore.collection("Posts").add(postMap).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    firebaseFirestore
+                                            .collection("Posts").add(postMap)
+                                            .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
                                         @Override
                                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
                                             if (task.isSuccessful()) {
 
-                                                Toast.makeText(CreatePostActivity.this, "Post was created", Toast.LENGTH_LONG).show();
-                                                Intent mainIntent = new Intent(CreatePostActivity.this,
+                                                Toast.makeText(CreatePostActivity.this,
+                                                        "Post was created", Toast.LENGTH_LONG).show();
+                                                Intent mainIntent =
+                                                        new Intent(CreatePostActivity.this,
                                                         MainActivity.class);
                                                 startActivity(mainIntent);
                                                 finish();
@@ -186,7 +192,8 @@ public class CreatePostActivity extends AppCompatActivity {
                     });
                 }
                 else {
-                    Toast.makeText(CreatePostActivity.this, "You must have written a description and upload an image", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreatePostActivity.this,
+                            "You must have written a description and upload an image", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -206,7 +213,8 @@ public class CreatePostActivity extends AppCompatActivity {
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
-                Toast.makeText(CreatePostActivity.this, "Error: " + error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CreatePostActivity.this,
+                        "Error: " + error.toString(), Toast.LENGTH_LONG).show();
             }
         }
     }
