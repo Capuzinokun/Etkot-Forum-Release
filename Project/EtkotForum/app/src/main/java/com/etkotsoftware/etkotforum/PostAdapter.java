@@ -40,6 +40,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     public Context context;
     public List<PostData> post_list;
 
+    public boolean[] is_admin = {false};
+
     private FirebaseFirestore firebaseFirestore;
 
     public PostAdapter(List<PostData> post_list) {
@@ -194,7 +196,19 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
                 String current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 String post_user_id = user_id;
-                if (current_user_id.equals(post_user_id)) {
+
+                firebaseFirestore.collection("Users").document(current_user_id).get()
+                        .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        try {
+                            is_admin[0] = task.getResult().getBoolean("is_admin");
+                        }
+                        catch (Exception ignore) {}
+                    }
+                });
+
+                if (current_user_id.equals(post_user_id) || is_admin[0]) {
                     firebaseFirestore.collection("Posts/")
                             .document(postID).delete();
                     Toast.makeText(holder.mView.getContext(),
